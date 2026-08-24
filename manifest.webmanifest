@@ -1,0 +1,13 @@
+{
+  "name": "Alpine Rescue – Mountain Rescue Simulator",
+  "short_name": "Alpine Rescue",
+  "description": "Mobile Bergrettungs- und Leitstellensimulator",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#08131d",
+  "theme_color": "#09141f",
+  "orientation": "portrait-primary",
+  "icons": [
+    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}

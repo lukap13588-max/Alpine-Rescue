@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#09141f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Alpine Rescue" />
+  <title>Alpine Rescue</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">✚</div>
+        <div>
+          <div class="eyebrow">LEITSTELLE TIROL</div>
+          <h1>ALPINE RESCUE</h1>
+        </div>
+      </div>
+      <button id="settingsBtn" class="icon-btn" aria-label="Einstellungen">⚙︎</button>
+    </header>
+
+    <section class="status-strip">
+      <div class="status-pill"><span>💶</span><strong id="money">12.500</strong></div>
+      <div class="status-pill"><span>⭐</span><strong id="rep">38</strong></div>
+      <div class="status-pill"><span id="weatherIcon">🌤️</span><strong id="weatherText">7°C</strong></div>
+      <div class="status-pill"><span>🕒</span><strong id="clock">17:42</strong></div>
+    </section>
+
+    <main>
+      <section id="mapView" class="view active" aria-label="Einsatzkarte">
+        <div class="map-card">
+          <div class="map-toolbar">
+            <div>
+              <div class="eyebrow">EINSATZGEBIET</div>
+              <div class="map-title">Kitzbüheler Alpen</div>
+            </div>
+            <div class="live-chip"><span class="pulse-dot"></span> LIVE</div>
+          </div>
+          <div id="map" class="map">
+            <svg class="terrain" viewBox="0 0 420 520" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#17384a" />
+                  <stop offset="100%" stop-color="#0c1b26" />
+                </linearGradient>
+                <linearGradient id="mountain" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#3a6670" />
+                  <stop offset="100%" stop-color="#17333f" />
+                </linearGradient>
+              </defs>
+              <rect width="420" height="520" fill="url(#bg)" />
+              <path d="M0 130 L65 35 L118 126 L171 62 L234 148 L297 49 L360 132 L420 78 L420 245 L0 245Z" fill="url(#mountain)" opacity=".94" />
+              <path d="M0 168 L80 72 L132 154 L190 91 L254 171 L315 82 L369 151 L420 110" fill="none" stroke="#aac9c8" stroke-opacity=".22" stroke-width="4" />
+              <path d="M24 434 C104 390, 136 416, 189 348 S294 302, 405 215" fill="none" stroke="#557f84" stroke-width="20" stroke-linecap="round" opacity=".35" />
+              <path d="M24 434 C104 390, 136 416, 189 348 S294 302, 405 215" fill="none" stroke="#86adb1" stroke-width="2" stroke-dasharray="5 8" opacity=".65" />
+              <path d="M42 344 C120 306, 178 316, 241 258 S336 228, 392 180" fill="none" stroke="#c3d7d6" stroke-width="4" opacity=".48" />
+              <path d="M80 462 C127 407, 165 392, 230 409 S344 408, 385 351" fill="none" stroke="#c3d7d6" stroke-width="3" opacity=".36" />
+              <circle cx="97" cy="366" r="6" fill="#dce9e8" opacity=".8" />
+              <circle cx="276" cy="329" r="5" fill="#dce9e8" opacity=".7" />
+              <circle cx="352" cy="239" r="5" fill="#dce9e8" opacity=".7" />
+            </svg>
+            <div class="town-label t1">Kirchdorf</div>
+            <div class="town-label t2">St. Johann</div>
+            <div class="town-label t3">Kitzbühel</div>
+            <div class="base-marker" style="left: 23%; top: 69%;"><span>✚</span><small>BASIS 1</small></div>
+            <div id="incidentLayer"></div>
+            <div id="vehicleLayer"></div>
+            <div class="map-gradient"></div>
+          </div>
+        </div>
+
+        <section class="section-block">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">AKTUELLE LAGE</div>
+              <h2>Einsätze</h2>
+            </div>
+            <div id="incidentCount" class="count-badge">0</div>
+          </div>
+          <div id="incidentList" class="incident-list"></div>
+        </section>
+      </section>
+
+      <section id="fleetView" class="view">
+        <div class="section-head roomy">
+          <div><div class="eyebrow">EINSATZMITTEL</div><h2>Flotte</h2></div>
+          <button id="buyVehicleBtn" class="mini-action">+ Kaufen</button>
+        </div>
+        <div id="fleetList" class="fleet-list"></div>
+      </section>
+
+      <section id="stationView" class="view">
+        <div class="section-head roomy">
+          <div><div class="eyebrow">BASIS KIRCHDORF</div><h2>Rettungsstation</h2></div>
+          <div class="level-badge">LVL <span id="stationLevel">1</span></div>
+        </div>
+        <div class="station-hero">
+          <div class="station-building">
+            <div class="garage"><span>🚑</span></div>
+            <div class="garage"><span>🚙</span></div>
+            <div class="tower"><span>✚</span></div>
+            <div class="helipad">H</div>
+          </div>
+          <div class="station-stats">
+            <div><span>Personal</span><strong id="staffStat">9</strong></div>
+            <div><span>Fahrzeuge</span><strong id="vehicleStat">3</strong></div>
+            <div><span>Kapazität</span><strong id="capacityStat">3/4</strong></div>
+          </div>
+        </div>
+        <div class="upgrade-list" id="upgradeList"></div>
+      </section>
+
+      <section id="careerView" class="view">
+        <div class="section-head roomy"><div><div class="eyebrow">FORTSCHRITT</div><h2>Karriere</h2></div></div>
+        <div class="career-card">
+          <div class="rank-ring"><div><strong id="rankLevel">2</strong><span>RANG</span></div></div>
+          <div class="career-copy">
+            <div class="eyebrow">BERGRETTUNGSLEITUNG</div>
+            <h3 id="rankName">Einsatzleiter</h3>
+            <p id="rankProgressText">Noch 12 Ruf bis zum nächsten Rang.</p>
+            <div class="progress"><div id="rankProgress"></div></div>
+          </div>
+        </div>
+        <div id="missionList" class="mission-list"></div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Hauptnavigation">
+      <button class="nav-btn active" data-view="mapView"><span>⌖</span><small>Karte</small></button>
+      <button class="nav-btn" data-view="fleetView"><span>🚑</span><small>Flotte</small></button>
+      <button class="nav-btn" data-view="stationView"><span>✚</span><small>Station</small></button>
+      <button class="nav-btn" data-view="careerView"><span>★</span><small>Karriere</small></button>
+    </nav>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+  <div id="modalBackdrop" class="modal-backdrop hidden"></div>
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true"></div>
+
+  <script src="game.js"></script>
+</body>
+</html>
